@@ -8,6 +8,10 @@ import br.com.bspicinini.forum.model.Topico;
 import br.com.bspicinini.forum.repository.CursoRepository;
 import br.com.bspicinini.forum.repository.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -15,7 +19,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,12 +32,14 @@ public class TopicosController {
     private CursoRepository cursoRepository;
 
     @GetMapping
-    public List<TopicoDto> lista(String nomeCurso) {
-        List<Topico> topicos;
+    public Page<TopicoDto> lista(@RequestParam(required = false) String nomeCurso,
+                                 @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable paginacao) {
+        Page<Topico> topicos;
+
         if (nomeCurso == null) {
-            topicos = topicoRepository.findAll();
+            topicos = topicoRepository.findAll(paginacao);
         } else {
-            topicos = topicoRepository.carregaPorNomeDoCurso(nomeCurso);
+            topicos = topicoRepository.findByCursoNome(nomeCurso, paginacao);
         }
 
         return TopicoDto.converter(topicos);
@@ -54,8 +59,8 @@ public class TopicosController {
     public ResponseEntity<DetalhesDoTopicoDto> detalhar(@PathVariable Long id) {
         Optional<Topico> topico = topicoRepository.findById(id);
 
-        if(topico.isPresent()){
-            return ResponseEntity.ok (new DetalhesDoTopicoDto(topico.get()));
+        if (topico.isPresent()) {
+            return ResponseEntity.ok(new DetalhesDoTopicoDto(topico.get()));
         }
 
         return ResponseEntity.notFound().build();
