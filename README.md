@@ -13,7 +13,7 @@ Primeiro é necessário realizar o build do projeto
 
 ##### Comando para build do artefato:
 
-    `mvn clean package`
+    mvn clean package
 
 Será gerado um **.jar** dentro da pasta **target**
 
