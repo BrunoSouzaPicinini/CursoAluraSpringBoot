@@ -23,12 +23,18 @@ FORUM_DATABASE_PASSWORD;FORUM_JWT_SECRET;
  
 Isso pode ser configurado no ambiente que está rodando a aplicação ou passado junto ao comando de execução.<br>
 
-##### Comando de execução:<br>
+##### Comando de execução:
 
-
-    java -jar -DFORUM_DATABASE_URL=jdbc:h2:mem:alura-forum -DFORUM_DATABASE_USERNAME=sa -DFORUM_DATABASE_PASSWORD= -DFORUM_JWT_SECRET=9874asdfartwrtawe323423sdfar2rwr23rfdsf23rfw -Dspring.profiles.active=prod forum.jar
-<br>
+    java -jar -DFORUM_DATABASE_URL=jdbc:h2:mem:forum -DFORUM_DATABASE_USERNAME=sa -DFORUM_DATABASE_PASSWORD= -DFORUM_JWT_SECRET=9874asdfartwrtawe323423sdfar2rwr23rfdsf23rfw -Dspring.profiles.active=prod forum.jar
 
 ##### Documentação Postman
 
 https://documenter.getpostman.com/view/9114358/Tzm8DuuA
+
+##### Comando para criar image docker 
+    
+    docker build -t forum .
+
+##### Comando para criar container docker 
+
+    docker run --name forum -d -p 8080:8080 -e SPRING_PROFILES_ACTIVE='prod' -e FORUM_DATABASE_URL='jdbc:h2:mem:forum' -e FORUM_DATABASE_USERNAME='sa' -e FORUM_DATABASE_PASSWORD='' -e FORUM_JWT_SECRET='9874asdfartwrtawe323423sdfar2rwr23rfdsf23rfw' forum
