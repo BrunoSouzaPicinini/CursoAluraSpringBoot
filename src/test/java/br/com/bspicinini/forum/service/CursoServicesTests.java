@@ -4,8 +4,11 @@ import br.com.bspicinini.forum.exceptions.BusinessException;
 import br.com.bspicinini.forum.form.CursoForm;
 import br.com.bspicinini.forum.model.Curso;
 import br.com.bspicinini.forum.repository.CursoRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
 
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.*;
@@ -33,6 +36,26 @@ public class CursoServicesTests {
 
         verify(cursoRepository, times(1))
                 .save(argThat(x -> x.getNome().equals(cursoForm.getNome()) && x.getCategoria().equals(cursoForm.getCategoria())));
+    }
+
+    @Test
+    public void alterarHappyDay() {
+        Optional<Curso> cursoConsultado = Optional.of(new Curso(10L, "Curso de Jardinagem", "Vida no campo"));
+        when(cursoRepository.findById(10L)).thenReturn(cursoConsultado);
+
+        Curso cursoRetornado = new Curso(10L, "Ornintorrinco", "Austrália");
+        when(cursoRepository.save(any(Curso.class))).thenReturn(cursoRetornado);
+
+        Curso cursoParametro = new Curso(10L, "Ornintorrinco", "Austrália");
+
+        Curso cursoRetornadoSubject = subject.alterar(cursoParametro);
+
+        Assertions.assertEquals("Ornintorrinco", cursoRetornadoSubject.getNome());
+        Assertions.assertEquals("Austrália", cursoRetornadoSubject.getCategoria());
+        verify(cursoRepository, times(1))
+                .findById(10L);
+        verify(cursoRepository, times(1))
+                .save(argThat(x -> x.getNome().equals("Ornintorrinco") && x.getCategoria().equals("Austrália")));
     }
 
     @Test
