@@ -1,5 +1,6 @@
 package br.com.bspicinini.forum.config.validacao;
 
+import br.com.bspicinini.forum.exceptions.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -31,6 +32,12 @@ public class ErroDeValidacaoHandler {
         });
 
         return dto;
+    }
+
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(BusinessException.class)
+    public ErroBusinessDto handle(BusinessException exception) {
+        return new ErroBusinessDto(exception.getMessage());
     }
 
 }
