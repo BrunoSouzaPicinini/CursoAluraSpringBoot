@@ -30,6 +30,8 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    private final String[] AUTHORIZE_URL_ACCESS = new String[] {"/v3/api-docs/**", "/configuration/ui", "/swagger-resources/**", "/swagger-ui.html", "/webjars/**", "/swagger/**"};
+
     @Override
     @Bean
     protected AuthenticationManager authenticationManager() throws Exception {
@@ -46,6 +48,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
                 .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+                .antMatchers(AUTHORIZE_URL_ACCESS).permitAll()
                 .antMatchers(HttpMethod.DELETE, "/topicos/*").hasRole("MODERADOR")
                 .anyRequest().authenticated()
                 .and().csrf().disable()

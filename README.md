@@ -38,3 +38,7 @@ https://documenter.getpostman.com/view/9114358/Tzm8DuuA
 ##### Comando para criar container docker 
 
     docker run --name forum -d -p 8080:8080 -e SPRING_PROFILES_ACTIVE='prod' -e FORUM_DATABASE_URL='jdbc:h2:mem:forum' -e FORUM_DATABASE_USERNAME='sa' -e FORUM_DATABASE_PASSWORD='' -e FORUM_JWT_SECRET='9874asdfartwrtawe323423sdfar2rwr23rfdsf23rfw' forum
+
+##### Swagger da aplicação
+    
+    http://localhost:8080/swagger/
