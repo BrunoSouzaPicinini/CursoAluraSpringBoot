@@ -34,7 +34,7 @@ public class ErroDeValidacaoHandler {
         return dto;
     }
 
-    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(code = HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(BusinessException.class)
     public ErroBusinessDto handle(BusinessException exception) {
         return new ErroBusinessDto(exception.getMessage());
